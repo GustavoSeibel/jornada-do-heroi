@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#7C3AED">
+  <title>A Jornada do Herói</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚔️</text></svg>">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body data-theme="default">
+  <canvas id="confetti-canvas" aria-hidden="true"></canvas>
+  <div id="toast-stack" class="toast-stack" role="status" aria-live="polite"></div>
+
+  <!-- Onboarding: coleta a linha de base de sono/despertar que define todas as metas -->
+  <section id="screen-onboarding" class="screen screen--onboarding">
+    <div class="scroll-parchment">
+      <p class="eyebrow">Ato I — O Camponês Desperto</p>
+      <h1>A Jornada do Herói</h1>
+      <p class="intro-text">Você vivia no automático. Agora, a jornada o chama. Prove seu valor com pequenas ações.</p>
+
+      <form id="onboarding-form" class="form" autocomplete="off">
+        <label class="field">
+          <span class="field__label">Como a Guilda deve te chamar?</span>
+          <input id="input-hero-name" class="field__input" type="text" maxlength="24" placeholder="Aventureiro" required>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Que horas você costuma acordar?</span>
+          <input id="input-wake-time" class="field__input" type="time" value="07:00" required>
+        </label>
+
+        <label class="field">
+          <span class="field__label">Que horas você costuma deitar?</span>
+          <input id="input-bed-time" class="field__input" type="time" value="23:30" required>
+          <span class="field__hint">As metas de despertar e de sono são calculadas a partir desses horários.</span>
+        </label>
+
+        <label class="checkbox">
+          <input id="input-notifications" type="checkbox" checked>
+          <span>Quero os chamados do Mestre da Guilda (07:00, 15:00 e 21:30).</span>
+        </label>
+
+        <button type="submit" class="btn btn--primary btn--block">Iniciar a jornada</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- App principal -->
+  <main id="screen-app" class="screen" hidden>
+    <header class="hud">
+      <div class="hud__identity">
+        <span id="hud-avatar" class="hud__avatar" aria-hidden="true">🧑‍🌾</span>
+        <div class="hud__names">
+          <strong id="hud-name" class="hud__name">Aventureiro</strong>
+          <span id="hud-act" class="hud__act">Ato I — O Camponês Desperto</span>
+        </div>
+        <div class="hud__day">
+          <span class="hud__day-label">Dia</span>
+          <span id="hud-day" class="hud__day-value">1</span>
+        </div>
+      </div>
+
+      <div class="xp">
+        <div class="xp__row">
+          <span id="hud-level" class="badge badge--level">Nível 1</span>
+          <span id="hud-xp" class="xp__numbers">0 / 100 XP</span>
+        </div>
+        <div class="bar bar--xp">
+          <div id="hud-xp-fill" class="bar__fill" style="width:0%"></div>
+        </div>
+      </div>
+
+      <div class="hud__stats">
+        <span id="hud-hearts" class="stat stat--hearts" title="Corações da semana">♥♥♥</span>
+        <span class="stat stat--gold" title="Moedas de ouro">🪙 <span id="hud-gold">0</span></span>
+        <span class="stat stat--streak" title="Maior combo ativo">🔥 <span id="hud-streak">0</span></span>
+      </div>
+    </header>
+
+    <nav class="tabs" role="tablist">
+      <button class="tab is-active" data-view="missions" role="tab" aria-selected="true">Missões</button>
+      <button class="tab" data-view="shop" role="tab" aria-selected="false">Loja</button>
+      <button class="tab" data-view="profile" role="tab" aria-selected="false">Herói</button>
+    </nav>
+
+    <section id="view-missions" class="view" role="tabpanel">
+      <p id="act-intro" class="act-intro"></p>
+      <div id="class-prompt" class="panel panel--highlight" hidden>
+        <h2 class="panel__title">Escolha sua Classe</h2>
+        <p class="panel__text">A Guilda liberou sua especialização. Ela concede +10% de XP em uma missão, para sempre.</p>
+        <div id="class-options" class="class-grid"></div>
+      </div>
+      <p id="act3-note" class="note" hidden></p>
+      <div id="mission-list" class="mission-list"></div>
+    </section>
+
+    <section id="view-shop" class="view" role="tabpanel" hidden>
+      <p class="view__intro">Ouro é ganho em dias perfeitos: todas as cinco missões concluídas.</p>
+      <div id="shop-list" class="shop-list"></div>
+    </section>
+
+    <section id="view-profile" class="view" role="tabpanel" hidden>
+      <div class="panel">
+        <h2 class="panel__title">Relíquias conquistadas</h2>
+        <div id="relic-list" class="relic-grid"></div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Combos</h2>
+        <div id="streak-list" class="streak-list"></div>
+      </div>
+
+      <div class="panel">
+        <h2 class="panel__title">Chefões</h2>
+        <div id="boss-list" class="boss-list"></div>
+      </div>
+
+      <div class="panel panel--muted">
+        <h2 class="panel__title">Pergaminho do Arquimago</h2>
+        <p class="panel__text">Ferramentas de teste. Avançar o dia fecha o dia atual, aplica combos, corações e chefão.</p>
+        <div class="panel__actions">
+          <button id="btn-advance-day" class="btn btn--ghost">Avançar um dia</button>
+          <button id="btn-reset" class="btn btn--danger">Recomeçar jornada</button>
+        </div>
+        <p id="debug-info" class="panel__text panel__text--small"></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="js/config.js"></script>
+  <script src="js/storage.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/confetti.js"></script>
+  <script src="js/notifications.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

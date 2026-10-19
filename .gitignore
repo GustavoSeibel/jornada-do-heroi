@@ -1,0 +1,12 @@
+# SO
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# Editores
+.vscode/
+.idea/
+
+# Node (o projeto nao usa build, mas servidores locais podem criar isto)
+node_modules/
+npm-debug.log*
