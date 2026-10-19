@@ -8,7 +8,7 @@ window.Jornada = window.Jornada || {};
   var Config = Jornada.Config;
   var Clock = Jornada.Clock;
   var Storage = Jornada.Storage;
-  var MISSION_IDS = ['water', 'sleep', 'wake', 'calisthenics', 'nails'];
+  var MISSION_IDS = ['water', 'sleep', 'wake', 'calisthenics', 'nails', 'sweets'];
 
   function event(type, payload) {
     var result = { type: type };
@@ -138,9 +138,15 @@ window.Jornada = window.Jornada || {};
         });
       case 'nails':
         return day.nails_bitten === false;
+      case 'sweets':
+        return day.sweetsClosed && day.sweets_count <= phase.maxSweets;
       default:
         return false;
     }
+  }
+
+  function sweetsWithinQuota(state) {
+    return state.today.sweets_count <= phaseFor(state, 'sweets').maxSweets;
   }
 
   function progressOf(state, missionId) {
@@ -160,6 +166,12 @@ window.Jornada = window.Jornada || {};
         return day.calisthenicsSteps.filter(Boolean).length / day.calisthenicsSteps.length;
       case 'nails':
         return day.nails_bitten === false ? 1 : 0;
+      /* Meia barra enquanto o dia corre dentro da cota; cheia ao encerrar; vazia se estourou. */
+      case 'sweets':
+        if (isComplete(state, missionId)) {
+          return 1;
+        }
+        return sweetsWithinQuota(state) ? 0.5 : 0;
       default:
         return 0;
     }
@@ -450,6 +462,40 @@ window.Jornada = window.Jornada || {};
     return events;
   }
 
+  function addSweet(state) {
+    var day = state.today;
+    if (day.sweetsClosed || day.sweets_count >= 50) {
+      return [];
+    }
+    day.sweets_count += 1;
+    return [];
+  }
+
+  function removeSweet(state) {
+    var day = state.today;
+    if (day.sweetsClosed || day.sweets_count === 0) {
+      return [];
+    }
+    day.sweets_count -= 1;
+    return [];
+  }
+
+  /* Encerrar o dia e' o que vale XP: registrar doces sozinho nao paga nada. */
+  function closeSweetsDay(state) {
+    var events = [];
+    if (state.today.sweetsClosed) {
+      return events;
+    }
+    state.today.sweetsClosed = true;
+    if (sweetsWithinQuota(state)) {
+      settleMission(state, 'sweets', events);
+    } else {
+      state.streaks.sweets = 0;
+      events.push(event('message', { text: Config.GUILD_MASTER.sweetsFailure, tone: 'warn' }));
+    }
+    return events;
+  }
+
   function canChooseClass(state) {
     return actFor(state).number >= Config.CLASS_UNLOCK_ACT;
   }
@@ -531,6 +577,7 @@ window.Jornada = window.Jornada || {};
     wakeWindow: wakeWindow,
     wakeWindowOpen: wakeWindowOpen,
     isComplete: isComplete,
+    sweetsWithinQuota: sweetsWithinQuota,
     progressOf: progressOf,
     levelForXp: levelForXp,
     xpIntoLevel: xpIntoLevel,
@@ -544,6 +591,9 @@ window.Jornada = window.Jornada || {};
     logWake: logWake,
     toggleExercise: toggleExercise,
     answerNails: answerNails,
+    addSweet: addSweet,
+    removeSweet: removeSweet,
+    closeSweetsDay: closeSweetsDay,
     chooseClass: chooseClass,
     buyItem: buyItem,
     equipItem: equipItem,

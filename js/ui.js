@@ -433,12 +433,75 @@ window.Jornada = window.Jornada || {};
     });
   }
 
+  function sweetsCard(state) {
+    var mission = Config.missionById('sweets');
+    var phase = Engine.phaseFor(state, 'sweets');
+    var day = state.today;
+    var within = Engine.sweetsWithinQuota(state);
+    var streak = state.streaks.sweets;
+
+    var goalText = phase.maxSweets === 0
+      ? 'Cota do Ato: nenhum doce. Registre qualquer escorregão com honestidade e encerre o dia.'
+      : 'Cota do Ato: até ' + phase.maxSweets + ' doce' + (phase.maxSweets === 1 ? '' : 's') + ' por dia. Registre o que comer e encerre o dia dentro do limite.';
+
+    var body = [
+      el('div', { class: 'mission__controls' }, [
+        el('button', {
+          class: 'btn btn--round',
+          type: 'button',
+          'aria-label': 'Remover um doce',
+          disabled: day.sweetsClosed || day.sweets_count === 0,
+          onClick: function () { handlers.removeSweet(); }
+        }, ['−']),
+        el('div', { class: 'counter' }, [
+          document.createTextNode(day.sweets_count + ' / ' + phase.maxSweets),
+          el('small', { text: 'doces hoje' })
+        ]),
+        el('button', {
+          class: 'btn btn--accent',
+          type: 'button',
+          disabled: day.sweetsClosed,
+          onClick: function () { handlers.addSweet(); }
+        }, ['Registrar um doce'])
+      ]),
+      el('div', { class: 'mission__controls' }, [
+        el('button', {
+          class: within ? 'btn btn--accent' : 'btn btn--ghost',
+          type: 'button',
+          disabled: day.sweetsClosed,
+          onClick: function () { handlers.closeSweetsDay(); }
+        }, [
+          day.sweetsClosed
+            ? 'Dia encerrado ✓'
+            : (within ? 'Encerrar o dia dentro da cota' : 'Encerrar o dia (cota estourada)')
+        ])
+      ])
+    ];
+
+    if (day.sweetsClosed) {
+      body.push(el('p', {
+        class: within ? 'mission__check' : 'mission__goal',
+        text: within
+          ? 'Cota respeitada: o açúcar não teve voz hoje.'
+          : 'Registro honesto feito. O combo zerou, mas a cota renasce amanhã.'
+      }));
+    } else {
+      body.push(el('p', {
+        class: 'mission__goal',
+        text: streak + (streak === 1 ? ' dia seguido' : ' dias seguidos') + ' dentro da cota.'
+      }));
+    }
+
+    return buildCard(state, mission, { goalText: goalText, body: body });
+  }
+
   var CARD_BUILDERS = {
     water: waterCard,
     sleep: sleepCard,
     wake: wakeCard,
     calisthenics: calisthenicsCard,
-    nails: nailsCard
+    nails: nailsCard,
+    sweets: sweetsCard
   };
 
   /* ------------------------------------------------------------ Render */

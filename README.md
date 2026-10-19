@@ -1,6 +1,6 @@
 # A Jornada do Herói
 
-App gamificado de mudança de hábitos. Cinco missões diárias, XP, níveis, combos, corações e ouro — em HTML, CSS e JavaScript puro, sem build e sem dependências.
+App gamificado de mudança de hábitos. Seis missões diárias, XP, níveis, combos, corações e ouro — em HTML, CSS e JavaScript puro, sem build e sem dependências.
 
 ## Como rodar
 
@@ -21,11 +21,11 @@ npx serve .
 - **Ato**: o roadmap de 7 em 7 dias. Ato I "O Camponês Desperto" (dias 1-7), Ato II "O Aprendiz da Guilda" (dias 8-14), Ato III "O Guerreiro Consolidado" (dias 15-21) e Ato IV "A Lenda Viva" (dia 22 em diante). É o Ato que define as metas de cada missão.
 - **Combos**: 1 a 2 dias seguidos valem 1x, 3 a 6 dias 1,2x, 7 a 13 dias 1,5x, 14 ou mais 2x.
 - **Corações**: 3 por semana, resetam na segunda-feira. Fechar o dia sem bater a meta mínima de água ou de sono custa meio coração. Zerar não gera punição: só uma mensagem do Mestre da Guilda.
-- **Ouro**: 5 moedas por dia perfeito (as cinco missões concluídas). Gasto em cosméticos na loja.
+- **Ouro**: 5 moedas por dia perfeito (as seis missões concluídas). Gasto em cosméticos na loja.
 - **Classe**: liberada no Ato II, dá +10% de XP permanente em uma missão à sua escolha.
 - **Chefão**: resolvido no domingo. Acumular 100 XP na semana derrota o chefão automaticamente; não acumular apenas registra que ele escapou.
 
-### As cinco missões
+### As seis missões
 
 | Missão | Ato I | Ato II+ |
 | --- | --- | --- |
@@ -34,12 +34,15 @@ npx serve .
 | Saudação ao Sol (despertar) | 15 min mais cedo, +20 XP | 30 a 60 min mais cedo, +30 XP |
 | O Treino da Guarda (calistenia) | flexões na parede, agachamentos, prancha de 20s, +25 XP | flexões inclinadas, agachamentos, prancha de 40s, +35 XP (a partir do Ato III) |
 | A Vontade de Ferro (unhas) | +10 XP por dia, +50 XP a cada 7 dias seguidos | igual |
+| A Tentação Açucarada (doces) | até 2 doces por dia, +10 XP | até 1 doce no Ato II (+15 XP), nenhum do Ato III em diante (+20 XP) |
 
 O botão de despertar só fica ativo dentro da janela calculada a partir do seu horário habitual. O check-in de sono tem duas partes: o noturno (largou as telas) registra a hora em que você deitou, e o matinal registra quantas horas dormiu.
 
+Na missão dos doces, registrar o que você comeu não paga nada sozinho: o XP sai de **encerrar o dia** dentro da cota. Encerrar com a cota estourada também é registrado — zera o combo, sem perder XP nem coração — porque o valor está no hábito de responder com honestidade. Depois de encerrado, o dia fica travado até a virada da meia-noite.
+
 ### Relíquias
 
-Conquistadas por mérito, nunca compradas: Espada de Madeira, Escudo de Bronze, Travesseiro de Penas de Fênix, Manoplas de Ferro e Elmo da Disciplina.
+Conquistadas por mérito, nunca compradas: Espada de Madeira, Escudo de Bronze, Travesseiro de Penas de Fênix, Manoplas de Ferro, Amuleto do Sabor Amargo e Elmo da Disciplina.
 
 ## Notificações
 

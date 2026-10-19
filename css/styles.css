@@ -7,6 +7,7 @@
   --orange: #f97316;
   --blue: #38bdf8;
   --gold: #fbbf24;
+  --rose: #fb7185;
   --green: #34d399;
   --red: #f87171;
 
@@ -335,6 +336,7 @@ button { font: inherit; cursor: pointer; }
 .mission[data-accent='wake'] { --accent: var(--gold); }
 .mission[data-accent='training'] { --accent: var(--orange); }
 .mission[data-accent='will'] { --accent: var(--purple-soft); }
+.mission[data-accent='sweet'] { --accent: var(--rose); }
 
 .mission.is-complete { border-color: color-mix(in srgb, var(--green) 45%, transparent); }
 

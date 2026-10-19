@@ -130,6 +130,20 @@ window.Jornada = window.Jornada || {};
       bonusXp: 50,
       unlockItem: 'manoplas_ferro',
       phases: [{ minAct: 1, xp: 10 }]
+    },
+    {
+      id: 'sweets',
+      name: 'A Tentação Açucarada',
+      subtitle: 'Redução de doces',
+      color: 'sweet',
+      unlockStreak: 7,
+      unlockItem: 'amuleto_amargo',
+      /* A cota encolhe a cada Ato: e' uma reducao, nao um corte seco. */
+      phases: [
+        { minAct: 1, maxSweets: 2, xp: 10 },
+        { minAct: 2, maxSweets: 1, xp: 15 },
+        { minAct: 3, maxSweets: 0, xp: 20 }
+      ]
     }
   ];
 
@@ -138,7 +152,8 @@ window.Jornada = window.Jornada || {};
     { id: 'guerreiro', name: 'Guerreiro', mission: 'calisthenics', description: 'Forja o corpo na repetição: +10% de XP no treino.' },
     { id: 'monge_crepusculo', name: 'Monge do Crepúsculo', mission: 'sleep', description: 'Domina a noite: +10% de XP no descanso.' },
     { id: 'paladino_aurora', name: 'Paladino da Aurora', mission: 'wake', description: 'Nasce com o sol: +10% de XP ao despertar.' },
-    { id: 'ermitao_ferro', name: 'Ermitão de Ferro', mission: 'nails', description: 'Vontade inabalável: +10% de XP no controle de impulsos.' }
+    { id: 'ermitao_ferro', name: 'Ermitão de Ferro', mission: 'nails', description: 'Vontade inabalável: +10% de XP no controle de impulsos.' },
+    { id: 'alquimista_amargo', name: 'Alquimista do Amargo', mission: 'sweets', description: 'Transmuta a vontade de doce: +10% de XP na cota de açúcar.' }
   ];
 
   /* Itens conquistados por merito — nunca comprados. */
@@ -147,6 +162,7 @@ window.Jornada = window.Jornada || {};
     { id: 'escudo_bronze', name: 'Escudo de Bronze', icon: '🛡️', hint: 'Treino avançado da Guarda concluído.' },
     { id: 'travesseiro_fenix', name: 'Travesseiro de Penas de Fênix', icon: '🪶', hint: '7 noites seguidas de descanso digno.' },
     { id: 'manoplas_ferro', name: 'Manoplas de Ferro', icon: '🧤', hint: '7 dias seguidos sem sofrer dano nas unhas.' },
+    { id: 'amuleto_amargo', name: 'Amuleto do Sabor Amargo', icon: '🧿', hint: '7 dias seguidos dentro da cota de doces.' },
     { id: 'elmo_disciplina', name: 'Elmo da Disciplina', icon: '⛑️', hint: 'Alcançou o Ato III da jornada.' }
   ];
 
@@ -161,12 +177,13 @@ window.Jornada = window.Jornada || {};
   ];
 
   var ICON_SETS = {
-    default: { water: '💧', sleep: '🌙', wake: '☀️', calisthenics: '💪', nails: '🤚' },
-    runicos: { water: '🜄', sleep: '🜁', wake: '🜂', calisthenics: '🜃', nails: '⚖️' }
+    default: { water: '💧', sleep: '🌙', wake: '☀️', calisthenics: '💪', nails: '🤚', sweets: '🍬' },
+    runicos: { water: '🜄', sleep: '🜁', wake: '🜂', calisthenics: '🜃', nails: '⚖️', sweets: '⚗️' }
   };
 
   var GUILD_MASTER = {
     nailsFailure: 'Até os melhores guerreiros tropeçam. Afie sua espada e tente amanhã!',
+    sweetsFailure: 'A confeitaria venceu a batalha, não a guerra. Amanhã sua cota renasce inteira.',
     heartLost: 'O Mestre da Guilda anota: você perdeu meio coração. Sem drama — amanhã se recupera.',
     heartsEmpty: 'Seus corações acabaram esta semana, mas ninguém é expulso da Guilda. Respire e recomece na segunda.',
     perfectDay: 'Dia perfeito! A Guilda abre os cofres e te entrega ouro.',

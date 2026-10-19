@@ -109,13 +109,15 @@ window.Jornada = window.Jornada || {};
       calisthenics_done: false,
       calisthenicsSteps: [false, false, false],
       nails_bitten: null,
+      sweets_count: 0,
+      sweetsClosed: false,
       goldAwarded: false,
-      claimed: { water: false, sleep: false, wake: false, calisthenics: false, nails: false }
+      claimed: { water: false, sleep: false, wake: false, calisthenics: false, nails: false, sweets: false }
     };
   }
 
   function zeroStreaks() {
-    return { water: 0, sleep: 0, wake: 0, calisthenics: 0, nails: 0 };
+    return { water: 0, sleep: 0, wake: 0, calisthenics: 0, nails: 0, sweets: 0 };
   }
 
   function defaultState() {
@@ -167,13 +169,16 @@ window.Jornada = window.Jornada || {};
       calisthenics_done: bool(raw.calisthenics_done),
       calisthenicsSteps: [bool(steps[0]), bool(steps[1]), bool(steps[2])],
       nails_bitten: raw.nails_bitten === true || raw.nails_bitten === false ? raw.nails_bitten : null,
+      sweets_count: clamp(raw.sweets_count, 0, 50, 0),
+      sweetsClosed: bool(raw.sweetsClosed),
       goldAwarded: bool(raw.goldAwarded),
       claimed: {
         water: bool(raw.claimed && raw.claimed.water),
         sleep: bool(raw.claimed && raw.claimed.sleep),
         wake: bool(raw.claimed && raw.claimed.wake),
         calisthenics: bool(raw.claimed && raw.claimed.calisthenics),
-        nails: bool(raw.claimed && raw.claimed.nails)
+        nails: bool(raw.claimed && raw.claimed.nails),
+        sweets: bool(raw.claimed && raw.claimed.sweets)
       }
     };
   }

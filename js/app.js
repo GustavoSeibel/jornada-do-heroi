@@ -88,6 +88,18 @@ window.Jornada = window.Jornada || {};
       apply(Engine.answerNails(state, survived));
     },
 
+    addSweet: function () {
+      apply(Engine.addSweet(state));
+    },
+
+    removeSweet: function () {
+      apply(Engine.removeSweet(state));
+    },
+
+    closeSweetsDay: function () {
+      apply(Engine.closeSweetsDay(state));
+    },
+
     chooseClass: function (classId) {
       apply(Engine.chooseClass(state, classId));
     },
