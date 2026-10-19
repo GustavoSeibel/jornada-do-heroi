@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2a1a5e"/>
+      <stop offset="55%" stop-color="#7c3aed"/>
+      <stop offset="100%" stop-color="#38bdf8"/>
+    </linearGradient>
+    <linearGradient id="lamina" x1="0.5" y1="0" x2="0.5" y2="1">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#c7d2fe"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Fundo sangrado: o glifo cabe na zona segura de 80% exigida por icones maskable -->
+  <rect width="512" height="512" fill="url(#fundo)"/>
+
+  <!-- Escudo -->
+  <path d="M256 96 L372 136 V250 C372 330 318 384 256 416 C194 384 140 330 140 250 V136 Z"
+        fill="rgba(20, 15, 38, 0.55)" stroke="#fbbf24" stroke-width="12" stroke-linejoin="round"/>
+
+  <!-- Espada -->
+  <path d="M256 150 L274 186 V286 H238 V186 Z" fill="url(#lamina)"/>
+  <rect x="206" y="286" width="100" height="20" rx="8" fill="#fbbf24"/>
+  <rect x="244" y="306" width="24" height="56" rx="10" fill="#f97316"/>
+  <circle cx="256" cy="368" r="16" fill="#fbbf24"/>
+</svg>

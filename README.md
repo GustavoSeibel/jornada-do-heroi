@@ -12,6 +12,17 @@ Se o seu navegador bloquear o `localStorage` em `file://` (acontece em algumas c
 npx serve .
 ```
 
+## No celular
+
+O projeto é um PWA instalável. Abra a URL publicada no navegador do celular e use **Adicionar à tela de início**: o app ganha ícone próprio, abre em tela cheia sem barra de navegador e funciona offline, porque o service worker guarda o app shell em cache.
+
+Duas coisas importantes sobre instalação:
+
+- O service worker só é registrado em origem segura (`https://` ou `localhost`). Em `file://` o app continua funcionando normalmente, mas sem instalação nem cache offline.
+- Todos os caminhos do `manifest.json` e do `sw.js` são relativos, porque o GitHub Pages serve o projeto dentro de uma subpasta. Trocar por caminhos absolutos quebraria a instalação.
+
+Ao publicar uma versão nova, suba o `CACHE_VERSION` em [sw.js](sw.js) para que o cache antigo seja descartado.
+
 ## Como o jogo funciona
 
 ### Núcleo

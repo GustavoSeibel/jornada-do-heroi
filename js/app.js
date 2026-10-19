@@ -146,8 +146,22 @@ window.Jornada = window.Jornada || {};
     }
   }
 
+  /* O service worker exige origem segura, entao em file:// nem tentamos:
+     o app continua funcionando, so' sem instalacao e sem cache offline. */
+  function registerServiceWorker() {
+    var host = window.location.hostname;
+    var secure = window.location.protocol === 'https:' || host === 'localhost' || host === '127.0.0.1';
+    if (!('serviceWorker' in window.navigator) || !secure) {
+      return;
+    }
+    window.navigator.serviceWorker.register('sw.js').catch(function () {
+      /* Falhar aqui nao impede o uso normal do app. */
+    });
+  }
+
   function boot() {
     UI.mount(handlers);
+    registerServiceWorker();
 
     if (!state.onboarded) {
       UI.showOnboarding();
